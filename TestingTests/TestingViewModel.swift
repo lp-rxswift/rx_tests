@@ -38,4 +38,16 @@ class TestingViewModel : XCTestCase {
       XCTAssertEqual(expectedColor, result)
     }
   }
+
+  func testColorIsRedWhenHexStringIsFF0000() {
+    let colorObservable = viewModel.color
+      .asObservable()
+      .subscribeOn(scheduler)
+
+    viewModel.hexString.accept("#ff0000")
+
+    XCTAssertEqual(try colorObservable
+                    .toBlocking(timeout: 1.0)
+                    .first(), .red)
+  }
 }
