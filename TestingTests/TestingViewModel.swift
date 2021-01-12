@@ -64,4 +64,15 @@ class TestingViewModel : XCTestCase {
     XCTAssertEqual(1 * 255, result.1)
     XCTAssertEqual(0 * 255, result.2)
   }
+
+  func testColorNameIsRayWenderlichGreenWhenHexStringIs006636() {
+    do {
+      let colorNameObservable = self.viewModel.colorName
+        .asObservable()
+        .subscribeOn(self.scheduler)
+
+      self.viewModel.hexString.accept("#006636")
+      XCTAssertEqual("rayWenderlichGreen", try colorNameObservable.toBlocking().first()!)
+    }
+  }
 }
