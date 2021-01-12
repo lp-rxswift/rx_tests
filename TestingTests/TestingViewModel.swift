@@ -50,4 +50,18 @@ class TestingViewModel : XCTestCase {
                     .toBlocking(timeout: 1.0)
                     .first(), .red)
   }
+
+  func testRgbIs010WhenHexStringIs00FF00() throws {
+    let rgbObservable = viewModel.rgb
+      .asObservable()
+      .subscribeOn(scheduler)
+
+    viewModel.hexString.accept("#00ff00")
+
+    let result = try rgbObservable.toBlocking().first()!
+
+    XCTAssertEqual(0 * 255, result.0)
+    XCTAssertEqual(1 * 255, result.1)
+    XCTAssertEqual(0 * 255, result.2)
+  }
 }
